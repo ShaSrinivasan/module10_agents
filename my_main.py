@@ -3,6 +3,7 @@
 
 from my_assistant import AppointmentHelper
 from my_tool import AppointmentBook
+from ollama_model import OllamaModel
 
 OPEN_TIMES = {
     "monday": "9:00 am",
@@ -12,12 +13,16 @@ OPEN_TIMES = {
     "friday": "none",
 }
 
+INSTRUCTIONS = """You are Jaxon, a support assistant for Sharath's Shoe Shop.
+Answer in one short sentence.
+The office is at 122 Lumen Street, on the twelfth floor.
+Bring any comfort soles or shoes to your appointment.
+Only state facts that appear in these instructions.
+If you do not know, say you do not know and offer to pass the client to the front desk."""
+
 appointment_book = AppointmentBook(OPEN_TIMES)
-helper = AppointmentHelper(
-    "Jaxon",
-    "You help clients of Sharath's Shoe shop book an appointment time.",
-    appointment_book,
-)
+model = OllamaModel("granite4.1:3b")
+helper = AppointmentHelper("Jaxon", INSTRUCTIONS, appointment_book, model)
 
 print("Type a message, or type quit to stop.")
 user_message = input("You: ")
